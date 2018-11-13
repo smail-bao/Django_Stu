@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        *{
+            margin:0;
+            padding: 0;
+        }
+    </style>
+    <script src="/static/jquery.js"></script>
+</head>
+<body>
+
+<div>
+    <table border="1">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>班级</th>
+                <th>操作</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            <h1>班级管理</h1>
+            <a href="/add_classes.html">添加班级</a>
+            <tr>
+                {% for classes in class_list %}
+                    <tr>
+                        <td>{{ forloop.counter }}</td>
+                        <td>{{ classes.title }}</td>
+                        <td>
+                            <a href="/edit_classes.html?nid={{ classes.id }}">编辑</a>
+                            <a href="/dispatch_teacher.html?nid={{ classes.id }}">分配老师</a>
+                            <a href="/del_classes.html?nid={{ classes.id }}">删除</a>
+                        </td>
+
+                    </tr>
+                {% endfor %}
+
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+
+</body>
+</html>

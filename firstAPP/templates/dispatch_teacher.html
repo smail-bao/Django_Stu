@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Dispatch Teacher</title>
+</head>
+<body>
+
+<form action="dispatch_teacher.html?nid={{ nid }}" method="post">
+    <select multiple size="10" name="teacher_id">
+    {% for row in all_teacher_list %}
+        {% if row.id in teacher_id_list %}
+            <option value="{{ row.id }}" selected>{{ row.name }}</option>
+        {% else %}
+            <option value="{{ row.id }}">{{ row.name }}</option>
+        {% endif %}
+    {% endfor %}
+    </select>
+    <input type="submit" value="提交数据">
+</form>
+
+</body>
+</html>

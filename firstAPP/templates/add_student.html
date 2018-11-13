@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Add Student</title>
+</head>
+<body>
+<form action="add_student.html" method="post">
+    <p><input type="text" name="name" placeholder="姓名"></p>
+    <p><input type="text" name="age" placeholder="年龄"></p>
+    <p>男<input type="radio" name="gender" value="1">
+        女<input type="radio" name="gender" value="0"></p>
+    <p>
+        <select name="classes">
+            {% for classes in classes_list %}
+                <option value="{{ classes.id }}">{{ classes.title }}</option>
+            {% endfor %}
+
+        </select>
+    </p>
+    <input type="submit" value="提交数据">
+</form>
+
+</body>
+</html>

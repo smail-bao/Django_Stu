@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Edit Student</title>
+</head>
+<body>
+<form action="edit_student.html" method="post">
+    <p><input type="text" name="nid" value="{{ obj.id }}" style="display: none"></p>
+{# 这里我们用尚明的input标签传obj.id或者在我们post的URL末尾加上一个?nid={{ obj.id }},只不过这个在后端取值的时候是从GET里去，上面的方法是从POST里取#}
+    <p><input type="text" name="name" value="{{ obj.name }}"></p>
+    <p><input type="text" name="age" value="{{ obj.age }}"></p>
+
+    {% if obj.gender %}
+        <p>男 <input type="radio" name="gender" value="{{ obj.gender }}" checked="true">
+            女 <input type="radio" name="gender" value="{{ obj.gender }}"></p>
+    {% else %}
+        <p>男 <input type="radio" name="gender" value="{{ obj.gender }}">
+            女 <input type="radio" name="gender" value="{{ obj.gender }}" checked="true"></p>
+    {% endif %}
+
+    <p>
+        <select name="classes">
+            {% for classes in classes_list %}
+                {% if obj.cs_id == classes.id %}
+                    <option value="{{ classes.id }}" selected>{{ classes.title }}</option>
+                {% else %}
+                    <option value="{{ classes.id }}">{{ classes.title }}</option>
+                {% endif %}
+
+            {% endfor %}
+        </select>
+    </p>
+    <input type="submit" value="提交数据">
+</form>
+</body>
+</html>

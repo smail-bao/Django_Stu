@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        .btn{
+            display: inline-block;
+            background-color: orangered;
+            padding: 5px 15px;
+            color: white;
+            cursor: pointer; {# 让光标在btn上变成一只小手 #}
+        }
+    </style>
+    <script src="/static/jquery.js"></script>
+</head>
+<body>
+<input type="text" id="username" placeholder="用户名">
+<input type="password" id="password" placeholder="密码">
+<div class="btn" onclick="submitForm();">提交</div>
+<br>
+<input type="text" id="v1" placeholder="数值">+
+<input type="text" id="v2" placeholder="数值">=
+<input type="text" id="v3" placeholder="数值">
+
+<div class="btn" onclick="addForm();">开始计算</div>
+
+<script>
+    function submitForm() {
+        var u = $('#username').val();
+        var p = $('#password').val();
+{#        var data_dict = {'usernme':$('#username'),'passwrod':$('#password')};#}
+
+        $.ajax({
+          url:'ajax2.html',
+          type:'GET',
+          data:{'username':u,'password':p}, {# 这里 username 在javascript加不加引号都可以 #}
+          success:function (arg) {
+              console.log(arg)
+          }
+        })
+    }
+    function addForm() {
+{#        var data_dict={v1:$('#v1'),v2:$('#v2')}.val();#}
+        var v1=$('#v1').val();
+        var v2=$('#v2').val();
+        $.ajax({
+            url:'ajax3.html',
+            type:'POST',
+{#            data:data_dict,#}
+            data:{v1:v1,v2:v2},
+            success:function (arg) {
+                $('#v3').val(arg);
+{#                console.log(arg)#}
+            }
+        })
+    }
+</script>
+</body>
+</html>

@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>List Student</title>
+</head>
+<body>
+<h1>学生信息管理</h1>
+<a href="add_student.html">添加学生信息</a>
+<div>
+     <table border="1">
+         <thead>
+            <tr>
+                <th>ID</th>
+                <th>姓名</th>
+                <th>年龄</th>
+                <th>性别</th>
+                <th>班级</th>
+                <th>操作</th>
+            </tr>
+         </thead>
+         <tbody>
+         {% for student in student_list %}
+             <tr>
+                <td>{{ forloop.counter }}</td>
+                <td>{{ student.name }}</td>
+                <td>{{ student.age }}</td>
+                <td>{{ student.gender }}</td>
+                <td>{{ student.cs.title }}</td>
+                <td>
+                    <a href="edit_student.html?nid={{ student.id }}">编辑</a>
+                    <a href="del_student.html?nid={{ student.id }}">删除</a>
+                </td>
+             </tr>
+         {% endfor %}
+
+         </tbody>
+     </table>
+</div>
+
+</body>
+</html>
