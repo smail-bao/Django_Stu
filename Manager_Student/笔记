@@ -2,3 +2,29 @@ bootstrap 下载链接： https://v3.bootcss.com/
 实际效果我们可以从这里看  https://v3.bootcss.com/css
 所有的图标我们可以参考  https://fontawesome.com/icons?d=gallery ,这个我们也要下载
 
+问题记录：
+这里我们的添加按钮用的是a标签，
+<a href="" class="btn btn-primary" style="margin-top: 8px" onclick="addshow();">添加</a>
+然后去执行函数
+    function addshow() {
+        $('#addModal').modal('show');
+    }
+但是这里我遇到了一个问题，就是当我去点击添加的时候，他重新刷新了一下，是疑问href是有一个默认的属性去刷新
+这里我们可以把href删除掉或者在href内设置javascript:void(0)就可以了。
+
+这里绑定触发时间我们还可以用另外一种方法
+<a class="btn btn-primary" style="margin-top: 8px" id="addshow">添加</a>
+
+<script>
+    $(function () {
+        bindshowEvent()
+    })
+    function bindshowEvent() {
+        $('#addshow').click(function () {
+            $('#addModal').modal('show');
+        })
+    }
+    func
+</script>
+
+一点击就绑定触发事件，这里我们可以绑定多个事件
