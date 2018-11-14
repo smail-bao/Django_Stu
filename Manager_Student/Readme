@@ -100,4 +100,34 @@ Close 是需要这个属性的，因为他要关闭模态框
 <tr nid="{{ row.id }}">
 这样的话我们就可以通过btnDelModal 找到他的父亲的父亲
 
-$('tr[nid="'+nid+'"]').remove() 这个没有弄明白
+$('tr[nid="'+nid+'"]').remove() 这个没有弄明白？？？
+"'+nid+'"  这个是对字符串的拼接，也就是说取到比如tr[nid=12]
+因为这里我们给每一行数据都自定义加上了<tr nid="{{ row.id }}">
+
+$.ajax({
+    url:'xxx.html',
+    type:'GET',
+    data:{},
+    dataType:'JSON'，
+    success:function(arg){
+    }
+    })
+}
+
+这里在没有加上    dataType:'JSON' 的时候arg是一个字符串，加上后，他就是一个对象，他自动进行了序列化JSON.parse
+
+prevAll() 方法返回被选元素之前的所有同级元素
+
+    $(this).parent().prevAll().each(function () {
+        var value = $(this).text();
+        var key = $(this).attr('name');
+    })
+ 取到当前的父级进行遍历，这里我们给td标签加上一个自定义属性name
+ 这里对gender 和 class 进行特别处理
+<td name="gender">{% if row.gender %}male{% else %}female{% endif %}</td>
+这里在展示的时候，代码不要写多行，这里我写多行，下面在判断自定义属性值的时候会有问题，好像是换行或者是空格的问题
+还有就是我们给td标签添加自定义属性的时候，处理radio和select特殊处理的，我们属性的值保持和input框的name属性值一样即可
+这样的话在编辑的时候他就会把输入框的内容按照编辑之前原样填充进去
+
+
+
