@@ -28,3 +28,62 @@ bootstrap 下载链接： https://v3.bootcss.com/
 </script>
 
 一点击就绑定触发事件，这里我们可以绑定多个事件
+
+each(function ()
+
+each() 方法规定为每个匹配元素规定运行函数。
+each 方法见 http://www.w3school.com.cn/jquery/traversing_each.asp
+
+    var name = $(this).attr('name');
+    var value = $(this).val();
+    var postData = {};
+    postData[name] = value;
+    console.log(postData);
+
+这里我们看到postData的输出值是这样的
+{csrfmiddlewaretoken: "0M7QK3MMHqA5OnSF2u1A4038jUnfOzWWwMDbtc2KulMNBtt8iGhrBiEBWS4GSh9p"}
+{username: "wenhao"}
+{age: "37"}
+{gender: "1"}
+{gender: "0"}
+{classes: "4"}
+
+这里我们应该把gender设置为选中的才赋值给gender,所以这里我们的加一个判断，是checked的才赋值给gender
+所以整个逻辑是这样的，数据采用字典形式存放var postData={}
+    function bindsaveEvent() {
+        $('#btnSave').click(function () {
+            var postData = {};
+            $('#addModal').find('input,select').each(function () {
+                var name = $(this).attr('name');
+                var value = $(this).val();
+                if (name == 'gender'){
+                    if ($(this).prop('checked')){
+                        postData[name] = value
+                    }
+                }
+                else{
+                    postData[name] = value
+                }
+            })
+            console.log(postData)
+        })
+    }
+这样当点击Save按钮的时候拿到所有input和select的数据，然后提交给表单
+所以当点击Save的时候我们还应该执行一个Ajax请求把数据发送给后端
+
+    success:function (arg) {
+        var dict = JSON.parse(arg);
+        if (dict.status){
+
+        }
+        else{
+            $('#errormsg').text(dict.msg)
+        }
+    }
+因为这里的arg是字符串，所以我们这里用JSON.parse 来转换格式为字典（对象）
+
+<button type="button" class="btn btn-primary" data-dismiss="modal" id="btnSave">Save</button>
+data-dismiss 是一个定制的 HTML5 data 属性。用于关闭模态窗口。
+所以这里我出现一个情况就是，错误已经在模态框上输出了，但是模态框马上就消失了，这个是因为data-dismiss="modal"的作用，所以这里我们给这个属性删除
+
+Close 是需要这个属性的，因为他要关闭模态框

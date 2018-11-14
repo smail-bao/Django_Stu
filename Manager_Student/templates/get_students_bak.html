@@ -9,10 +9,9 @@
 <div class="container">
 
     <div>
-
-{#        <a class="btn btn-primary" style="margin-top: 8px" onclick="addshow();">添加</a>#}
-        <a class="btn btn-primary" style="margin-top: 8px" id="btnShow">添加</a>
-        <a class="btn btn-danger" style="margin-top: 8px">删除</a>
+        <a class="btn btn-primary" style="margin-top: 8px" onclick="addshow();">添加</a>
+        {#        <a class="btn btn-primary" style="margin-top: 8px" id="addshow">添加</a>#}
+        <a href="" class="btn btn-danger" style="margin-top: 8px">删除</a>
     </div>
     <table class="table table-bordered table-striped">
         <thead>
@@ -50,6 +49,11 @@
     </table>
 </div>
 
+<!-- Button trigger modal -->
+{#<button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">#}
+{#  Launch demo modal#}
+{#</button>#}
+
 <!-- Modal -->
 <div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
     <div class="modal-dialog" role="document">
@@ -60,7 +64,8 @@
                 <h4 class="modal-title" id="myModalLabel">录入班级信息</h4>
             </div>
             <div class="modal-body">
-                <form class="form-horizontal" method="post">
+                <form class="form-horizontal" action="students.html" method="post">
+                {% csrf_token %}
                     <div class="form-group">
                         <label for="inputEmail3" class="col-sm-2 control-label">姓名</label>
                         <div class="col-sm-10">
@@ -87,21 +92,18 @@
                     <div class="form-group">
                         <label for="inputPassword3" class="col-sm-2 control-label">班级</label>
                         <div class="col-sm-10">
-                            <select class="form-control" name="cls_id">
+                            <select class="form-control" name="classes">
                                 {% for row in class_obj %}
                                     <option value="{{ row.id }}">{{ row.title }}</option>
                                 {% endfor %}
                             </select>
                         </div>
                     </div>
-
-                </form>
-            </div>
-
-            <div class="modal-footer">
-                        <span id="errorMsg" style="color: red;"></span>
+                    <div class="modal-footer">
                         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                        <button type="button" class="btn btn-primary" id="btnSave">Save</button>
+                        <input type="submit" class="btn btn-primary" value="保存">
+                    </div>
+                </form>
             </div>
         </div>
     </div>
@@ -113,50 +115,18 @@
 {# 这里的模态框我们可以调用.modal('show')的方法调用出来#}
 <script>
     $(function () {
-        bindshowEvent();
-        bindsaveEvent();
-    });
-// 这里我们绑定两个事件，一个是show 模态框的按钮btnShow,一个是save按钮btnSave
+        bindshowEvent()
+    })
+
     function bindshowEvent() {
-        $('#btnShow').click(function () {
+        $('#addshow').click(function () {
             $('#addModal').modal('show');
         })
     }
-//这里btnSave 我们要拿到所有的input和select标签的值，这里我们从id=addModal 里面取,这里find是找标签，each是遍历找到的所有标签
-//each 方法见 http://www.w3school.com.cn/jquery/traversing_each.asp   each() 方法规定为每个匹配元素规定运行的函数。
-//console.log(this) 打印出了所有的input标签和select标签,这样我们会看到我们的radio标签取到了两个值，这里我们得加个判断给选中的checked的赋值
-    function bindsaveEvent() {
-        $('#btnSave').click(function () {
-            var postData = {};
-            $('#addModal').find('input,select').each(function () {
-                var name = $(this).attr('name');
-                var value = $(this).val();
-                if (name == 'gender'){
-                    if ($(this).prop('checked')){
-                        postData[name] = value
-                    }
-                }
-                else{
-                    postData[name] = value
-                }
-            });
-            $.ajax({
-                url:'add_student.html',
-                type:'POST',
-                data:postData,
-                success:function (arg) {
-                    var dict = JSON.parse(arg);
-                    if (dict.status){
-                        window.location.reload();
-                    }
-                    else{
-                        $('#errorMsg').text(dict.msg);
-                    }
-                }
-            })
-        })
-    }
 
+    function addshow() {
+        $('#addModal').modal('show');
+    }
 </script>
 </body>
 </html>
