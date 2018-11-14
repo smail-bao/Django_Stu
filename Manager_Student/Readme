@@ -80,7 +80,9 @@ each 方法见 http://www.w3school.com.cn/jquery/traversing_each.asp
             $('#errormsg').text(dict.msg)
         }
     }
-因为这里的arg是字符串，所以我们这里用JSON.parse 来转换格式为字典（对象）
+因为这里的arg是字符串，所以我们这里用
+JSON.parse 来转换格式为字典（对象）
+JSON.stringify(dict) 字典转换成字符串
 
 <button type="button" class="btn btn-primary" data-dismiss="modal" id="btnSave">Save</button>
 data-dismiss 是一个定制的 HTML5 data 属性。用于关闭模态窗口。
