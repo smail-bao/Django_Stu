@@ -10,13 +10,14 @@
 
     <div>
 
-{#        <a class="btn btn-primary" style="margin-top: 8px" onclick="addshow();">添加</a>#}
+        {#        <a class="btn btn-primary" style="margin-top: 8px" onclick="addshow();">添加</a>#}
         <a class="btn btn-primary" style="margin-top: 8px" id="btnShow">添加</a>
         <a class="btn btn-danger" style="margin-top: 8px">删除</a>
     </div>
     <table class="table table-bordered table-striped">
         <thead>
         <tr>
+            <th>序号</th>
             <th>姓名</th>
             <th>年龄</th>
             <th>性别</th>
@@ -26,7 +27,8 @@
         </thead>
         <tbody>
         {% for row in stu_obj %}
-            <tr>
+            <tr nid="{{ row.id }}">
+                <td>{{ forloop.counter }}</td>
                 <td>{{ row.name }}</td>
                 <td>{{ row.age }}</td>
                 <td>
@@ -37,14 +39,13 @@
                     {% endif %}
                 </td>
                 <td>{{ row.cs.title }}</td>
+
                 <td>
-                    <a href="" class="glyphicon glyphicon-remove" style="margin-right: 8px;"></a>
-                    <a href="" class="glyphicon glyphicon-pencil"></a>
+                    <a class="glyphicon glyphicon-remove btnDelModal" style="margin-right: 8px;" id="delNid"></a>
+                    <a class="glyphicon glyphicon-pencil"></a>
                 </td>
             </tr>
         {% endfor %}
-
-
         </tbody>
 
     </table>
@@ -99,10 +100,21 @@
             </div>
 
             <div class="modal-footer">
-                        <span id="errorMsg" style="color: red;"></span>
-                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                        <button type="button" class="btn btn-primary" id="btnSave">Save</button>
+                <span id="errorMsg" style="color: red;"></span>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" id="btnSave">Save</button>
             </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="delModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="alert alert-danger" role="alert">
+            <h4>确定删除该学生信息吗？</h4>
+            <div>..........</div>
+            <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+            <button type="button" class="btn btn-danger" id="btnConfirm">确定</button>
         </div>
     </div>
 </div>
@@ -115,41 +127,74 @@
     $(function () {
         bindshowEvent();
         bindsaveEvent();
+        binddelEvent();
+        bindDelConfirmEvent();
     });
-// 这里我们绑定两个事件，一个是show 模态框的按钮btnShow,一个是save按钮btnSave
+
+    function bindDelConfirmEvent() {
+        $('#btnConfirm').click(function () {
+            var nid = $('#delNid').val();
+            console.log(nid);
+            $.ajax({
+                url: 'del_student.html',
+                type: 'GET',
+                data: {'nid': nid},
+                success: function (arg) {
+                    var dic = JSON.parse(arg);
+                    if (dic.status) {
+                        {#                        $('#btnDelModal').parent().parent().removeNamespace();#}
+                        $('tr[nid="' + nid + '"]').remove()
+                    }
+                    $('#delModal').modal('hide');
+                }
+            })
+        })
+    }
+
+    function binddelEvent() {
+        $('.btnDelModal').click(function () {
+            // 这里我们获取到点击事件的当前的id号
+            var rowid = $(this).parent().parent().attr('nid');
+            $('#delNid').val(rowid);
+            $('#delModal').modal('show');
+        })
+    }
+
+    // 这里我们绑定两个事件，一个是show 模态框的按钮btnShow,一个是save按钮btnSave
     function bindshowEvent() {
         $('#btnShow').click(function () {
             $('#addModal').modal('show');
         })
     }
-//这里btnSave 我们要拿到所有的input和select标签的值，这里我们从id=addModal 里面取,这里find是找标签，each是遍历找到的所有标签
-//each 方法见 http://www.w3school.com.cn/jquery/traversing_each.asp   each() 方法规定为每个匹配元素规定运行的函数。
-//console.log(this) 打印出了所有的input标签和select标签,这样我们会看到我们的radio标签取到了两个值，这里我们得加个判断给选中的checked的赋值
+
+    //这里btnSave 我们要拿到所有的input和select标签的值，这里我们从id=addModal 里面取,这里find是找标签，each是遍历找到的所有标签
+    //each 方法见 http://www.w3school.com.cn/jquery/traversing_each.asp   each() 方法规定为每个匹配元素规定运行的函数。
+    //console.log(this) 打印出了所有的input标签和select标签,这样我们会看到我们的radio标签取到了两个值，这里我们得加个判断给选中的checked的赋值
     function bindsaveEvent() {
         $('#btnSave').click(function () {
             var postData = {};
             $('#addModal').find('input,select').each(function () {
                 var name = $(this).attr('name');
                 var value = $(this).val();
-                if (name == 'gender'){
-                    if ($(this).prop('checked')){
+                if (name == 'gender') {
+                    if ($(this).prop('checked')) {
                         postData[name] = value
                     }
                 }
-                else{
+                else {
                     postData[name] = value
                 }
             });
             $.ajax({
-                url:'add_student.html',
-                type:'POST',
-                data:postData,
-                success:function (arg) {
+                url: 'add_student.html',
+                type: 'POST',
+                data: postData,
+                success: function (arg) {
                     var dict = JSON.parse(arg);
-                    if (dict.status){
+                    if (dict.status) {
                         window.location.reload();
                     }
-                    else{
+                    else {
                         $('#errorMsg').text(dict.msg);
                     }
                 }

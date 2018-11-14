@@ -30,7 +30,6 @@ bootstrap 下载链接： https://v3.bootcss.com/
 一点击就绑定触发事件，这里我们可以绑定多个事件
 
 each(function ()
-
 each() 方法规定为每个匹配元素规定运行函数。
 each 方法见 http://www.w3school.com.cn/jquery/traversing_each.asp
 
@@ -39,6 +38,12 @@ each 方法见 http://www.w3school.com.cn/jquery/traversing_each.asp
     var postData = {};
     postData[name] = value;
     console.log(postData);
+
+
+attr() 方法设置或返回被选元素的属性和值。
+当该方法用于返回属性值，则返回第一个匹配元素的值。  $(selector).attr(attribute)
+当该方法用于设置属性值，则为匹配元素设置一个或多个属性/值对。$(selector).attr(attribute,value)
+
 
 这里我们看到postData的输出值是这样的
 {csrfmiddlewaretoken: "0M7QK3MMHqA5OnSF2u1A4038jUnfOzWWwMDbtc2KulMNBtt8iGhrBiEBWS4GSh9p"}
@@ -89,3 +94,10 @@ data-dismiss 是一个定制的 HTML5 data 属性。用于关闭模态窗口。
 所以这里我出现一个情况就是，错误已经在模态框上输出了，但是模态框马上就消失了，这个是因为data-dismiss="modal"的作用，所以这里我们给这个属性删除
 
 Close 是需要这个属性的，因为他要关闭模态框
+
+删除学生（主要绕的点就是获取用户的id和绑定触发删除事件（点击删除按钮绑定事件+确定删除用户信息按钮绑定事件））
+这里我们给每行信息加上nid
+<tr nid="{{ row.id }}">
+这样的话我们就可以通过btnDelModal 找到他的父亲的父亲
+
+$('tr[nid="'+nid+'"]').remove() 这个没有弄明白

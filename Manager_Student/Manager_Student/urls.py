@@ -20,4 +20,5 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('students.html', views.students),
     path('add_student.html', views.add_student),
+    path('del_student.html', views.del_student),
 ]
