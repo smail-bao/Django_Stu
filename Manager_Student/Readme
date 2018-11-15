@@ -167,4 +167,21 @@ prevAll() 方法返回被选元素之前的所有同级元素
             数据量小，条目少的适合
             考虑：当前页（分页），td中自定义属性
     3、删除建议就用对话框的方式操作
-            
+
+
+当Ajax提交的数据value是一个元祖或者列表的时候(value不支持字典)，我们需要添加traditional:true,不然后端从request.GET拿到的key 是 k[]
+    $.ajax({
+        url:'edit_student.html',
+        type:'GET',
+        data:{'k':(1,2,3,4)},
+        traditional:true,
+        dataType:'JSON',
+        success:function (arg) {
+            console.log(arg)
+            }
+        }
+
+发送数据的时候data中的value是数字或者字符串，正常发
+如果包含数组或者列表，我们要添加一个traditional:true
+value 不支持字典，如果非要传字典，我们可以给他转成字符串
+data:{'k1':JSON.stringfy({'k2':'v2','k3':'v3'})}  到达后端之后我们再通过loads转换
