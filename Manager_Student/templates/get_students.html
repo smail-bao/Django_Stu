@@ -36,8 +36,8 @@
                 <td name="cls_id" cid="{{ row.cs_id }}">{{ row.cs.title }}</td>
 
                 <td>
-                    <a class="glyphicon glyphicon-remove btnDelModal" style="margin-right: 8px;" id="delNid"></a>
-                    <a class="glyphicon glyphicon-pencil btnEditModal"></a>
+                    <a class="glyphicon glyphicon-remove btnDelModal" style="margin-right: 8px;" id="DelNid"></a>
+                    <a class="glyphicon glyphicon-pencil btnEditModal" id="EditNid"></a>
                 </td>
             </tr>
         {% endfor %}
@@ -164,7 +164,7 @@
             <div class="modal-footer">
                 <span id="errorMsg" style="color: red;"></span>
                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary" id="btnSave">Save</button>
+                <button type="button" class="btn btn-primary" id="btnEditSave">Save</button>
             </div>
         </div>
     </div>
@@ -180,16 +180,31 @@
         bindshowEvent();
         bindsaveEvent();
         binddelEvent();
-        btnEditModalEvent();
         bindDelConfirmEvent();
+        btnEditModalEvent();
+        bindEditConfirmEvent();
     });
+    function bindEditConfirmEvent() {
+        $('#btnEditSave').click(function () {
+            var nid = $('#EditNid').val();
+            var postData = {};
+            $('#editModal').find("input,select").each(function () {
+                var name = $(this).attr('name');
+                var value = $(this).val();
+                console.log(nid,name,value)
+            })
+
+
+
+        })
+
+    }
 
     function btnEditModalEvent() {
         $('.btnEditModal').click(function () {
             $('#editModal').modal('show');
             var nid = $(this).parent().parent().attr('nid');
-            {#            console.log(nid);#}
-            {#            console.log($(this).parent().prevAll());#}
+            $('#EditNid').val(nid); //这里给EditNid赋值，然后方便“确定编辑按钮”取值nid
             $(this).parent().prevAll().each(function () {
                 var value = $(this).text();
                 var key = $(this).attr('name');
@@ -215,7 +230,7 @@
 
     function bindDelConfirmEvent() {
         $('#btnConfirm').click(function () {
-            var nid = $('#delNid').val();
+            var nid = $('#DelNid').val();
             console.log(nid);
             $.ajax({
                 url: 'del_student.html',
@@ -236,8 +251,8 @@
     function binddelEvent() {
         $('.btnDelModal').click(function () {
             // 这里我们获取到点击事件的当前的id号
-            var rowid = $(this).parent().parent().attr('nid');
-            $('#delNid').val(rowid);
+            var nid = $(this).parent().parent().attr('nid');
+            $('#DelNid').val(nid);
             $('#delModal').modal('show');
         })
     }

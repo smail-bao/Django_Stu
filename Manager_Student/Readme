@@ -123,11 +123,26 @@ prevAll() 方法返回被选元素之前的所有同级元素
         var key = $(this).attr('name');
     })
  取到当前的父级进行遍历，这里我们给td标签加上一个自定义属性name
- 这里对gender 和 class 进行特别处理
+ 这里对gender 和 class 进行特别处理（这个gender是radio,class是select）
+
 <td name="gender">{% if row.gender %}male{% else %}female{% endif %}</td>
-这里在展示的时候，代码不要写多行，这里我写多行，下面在判断自定义属性值的时候会有问题，好像是换行或者是空格的问题
+
+    这里在展示的时候，代码不要写多行，这里我写多行，下面在判断自定义属性值的时候会有问题，好像是换行或者是空格的问题
 还有就是我们给td标签添加自定义属性的时候，处理radio和select特殊处理的，我们属性的值保持和input框的name属性值一样即可
 这样的话在编辑的时候他就会把输入框的内容按照编辑之前原样填充进去
 
-
-
+这里我的理解难点是在编辑和删除的时候怎么把nid传到后端，这里删除和编辑的逻辑是一样的（获取nid）
+1、点击编辑和删除按钮（绑定事件），获取id
+    1.1  .btnEditModal按钮绑定事件
+            var nid = $(this).parent().parent().attr('nid');
+            $('#EditNid').val(nid);
+    1.2  .btnDelModal按钮绑定事件
+            var nid = $(this).parent().parent().attr('nid');
+            $('#DelNid').val(nid);
+    1.3  我们给编辑和删除按钮添加一个DelNid   EditNid
+            <a class="glyphicon glyphicon-remove btnDelModal" style="margin-right: 8px;" id="DelNid"></a>
+            <a class="glyphicon glyphicon-pencil btnEditModal" id="EditNid"></a>
+2、这里我们在删除和编辑的时候都有一个确认按钮
+   这样我们在确认的时候各自绑定一个事件，然后我们就可以去取nid了
+   var nid = $('#DelNid').val();
+   var nid = $('#EditNid').val();
