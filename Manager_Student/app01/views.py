@@ -42,3 +42,22 @@ def del_student(request):
     except Exception as e:
         response['status'] = False
     return HttpResponse(json.dumps(response, ensure_ascii=False))
+
+def edit_student(request):
+    response = {'code':200,'msg':None}
+    try:
+        nid = request.GET.get('nid')
+        name = request.GET.get('username')
+        age = request.GET.get('age')
+        gender = request.GET.get('gender')
+        cls_id = request.GET.get('cls_id')
+        models.Students.objects.filter(id=nid).update(
+            name=name,
+            age=age,
+            gender=gender,
+            cs_id=cls_id
+        )
+    except Exception as e:
+        response['code']=500
+        response['msg']=e
+    return HttpResponse(json.dumps(response,ensure_ascii=False))

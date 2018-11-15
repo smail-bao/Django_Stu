@@ -188,16 +188,33 @@
         $('#btnEditSave').click(function () {
             var nid = $('#EditNid').val();
             var postData = {};
+            postData['nid']=nid;
             $('#editModal').find("input,select").each(function () {
                 var name = $(this).attr('name');
                 var value = $(this).val();
-                console.log(nid,name,value)
+                console.log(nid,name,value);
+                if(name=='gender'){
+                    if ($(this).prop('checked')){
+                        postData[name]=value
+                    }
+                }else{
+                    postData[name]=value
+                }
+            });
+            $.ajax({
+                url:'edit_student.html',
+                type:'GET',
+                data:postData,
+                dataType:'JSON',
+                success:function (arg) {
+                    if (arg.code=='200'){
+                        window.location.reload()
+                    }else{
+                        alert(arg.msg)
+                    }
+                }
             })
-
-
-
         })
-
     }
 
     function btnEditModalEvent() {

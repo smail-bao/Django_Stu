@@ -146,3 +146,25 @@ prevAll() 方法返回被选元素之前的所有同级元素
    这样我们在确认的时候各自绑定一个事件，然后我们就可以去取nid了
    var nid = $('#DelNid').val();
    var nid = $('#EditNid').val();
+
+这里添加和编辑的时候我们怎么去获取其他的值呢，我们会看到所有的值都是在input框和select内
+所以我们利用下面的方式获取，这里我们再单独的对radio做一个判断即可
+ $('#editModal').find("input,select").each(function () {
+                var name = $(this).attr('name');
+                var value = $(this).val();
+                console.log(nid,name,value)
+            })
+
+
+总结：
+两种添加和修改数据的两种方式：
+    1、跳转到新的URL操作
+        优点：
+            独立的页面
+            数据量大或者操作条目框多的时候适合
+    2、Ajax对话框操作：
+        优点：
+            数据量小，条目少的适合
+            考虑：当前页（分页），td中自定义属性
+    3、删除建议就用对话框的方式操作
+            
