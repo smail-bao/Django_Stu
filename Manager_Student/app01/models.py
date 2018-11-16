@@ -24,5 +24,6 @@ class Students(models.Model):
     name=models.CharField(max_length=32)
     age=models.IntegerField()
     gender=models.BooleanField()
+    hobby=models.CharField(max_length=32,default='Book')
     cs=models.ForeignKey(Classes,on_delete=models.CASCADE)
 
